@@ -1,8 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import { type CollectionEntry } from "astro:content";
-type Props = CollectionEntry<"blog">["data"];
+import FormateDate from "./FormateDate.astro";
+type Props = CollectionEntry<"blog">["data"] & { slug: string };
 
-const { heroImage, title, tags, pubDate } = Astro.props;
+const { heroImage, title, tags, pubDate, slug } = Astro.props;
 ---
 
 <li
@@ -10,12 +12,12 @@ const { heroImage, title, tags, pubDate } = Astro.props;
 >
     <div>
         <article>
-            <a>
-                <img
+            <a href={`/blog/${slug}`}>
+                <Image
                     src={heroImage}
-                    alt=""
-                    width="1020"
-                    height="520"
+                    alt={title}
+                    width={1020}
+                    height={520}
                     class="aspect-[16/5] rounded-t-xl object-cover"
                 />
                 <div class="w-full">
@@ -32,18 +34,7 @@ const { heroImage, title, tags, pubDate } = Astro.props;
                                 ))
                             }
                         </div>
-                        <time
-                            datetime={pubDate.toISOString()}
-                            class="mt-6 text-sm text-zinc-400"
-                        >
-                            {
-                                pubDate.toLocaleDateString("es-es", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                })
-                            }
-                        </time>
+                        <FormateDate date={pubDate} />
                     </div>
                 </div>
             </a>
